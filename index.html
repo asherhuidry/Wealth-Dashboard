@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Investment Portfolio Tracker</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <header>
+      <h1>Investment Portfolio Tracker</h1>
+      <p>Build your portfolio across asset classes and monitor performance and allocation at a glance.</p>
+    </header>
+
+    <section class="panel form-panel" aria-labelledby="holding-form-title">
+      <h2 id="holding-form-title">Add Holding</h2>
+      <form id="holding-form">
+        <div class="field-grid">
+          <label>
+            Asset name
+            <input id="asset-name" name="assetName" type="text" placeholder="e.g., S&P 500 ETF" required />
+          </label>
+
+          <label>
+            Asset class
+            <select id="asset-class" name="assetClass" required>
+              <option value="Equities">Equities</option>
+              <option value="Bonds">Bonds</option>
+              <option value="Real Estate">Real Estate</option>
+              <option value="Commodities">Commodities</option>
+              <option value="Cash">Cash</option>
+              <option value="Crypto">Crypto</option>
+            </select>
+          </label>
+
+          <label>
+            Amount invested ($)
+            <input id="amount-invested" name="amountInvested" type="number" min="0" step="0.01" placeholder="10000" required />
+          </label>
+
+          <label>
+            Current value ($)
+            <input id="current-value" name="currentValue" type="number" min="0" step="0.01" placeholder="11500" required />
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit">Add to Portfolio</button>
+          <button type="button" class="secondary" id="load-example">Load Example Portfolio</button>
+          <button type="button" class="danger" id="clear-portfolio">Clear All</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="panel" aria-labelledby="summary-title">
+      <h2 id="summary-title">Portfolio Summary</h2>
+      <div class="summary-grid">
+        <article>
+          <h3>Total Invested</h3>
+          <p id="total-invested" class="metric">$0.00</p>
+        </article>
+        <article>
+          <h3>Current Value</h3>
+          <p id="total-current" class="metric">$0.00</p>
+        </article>
+        <article>
+          <h3>Profit / Loss</h3>
+          <p id="profit-loss" class="metric neutral">$0.00</p>
+        </article>
+        <article>
+          <h3>Return</h3>
+          <p id="return-rate" class="metric neutral">0.00%</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="allocation-title">
+      <h2 id="allocation-title">Asset Allocation</h2>
+      <div id="allocation-chart" class="allocation-chart" role="list"></div>
+      <p id="allocation-empty" class="empty-state">Add assets to view your allocation breakdown.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="holdings-title">
+      <h2 id="holdings-title">Holdings</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Asset</th>
+              <th>Class</th>
+              <th>Invested</th>
+              <th>Current</th>
+              <th>P/L</th>
+              <th>Return</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="holdings-body">
+            <tr class="placeholder-row">
+              <td colspan="7">No holdings yet.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
