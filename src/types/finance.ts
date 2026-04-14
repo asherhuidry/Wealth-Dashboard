@@ -9,6 +9,15 @@ export type ExecutiveMetrics = {
   monthlyActualSpend: number;
 };
 
+export type MetricItem = {
+  id: string;
+  title: string;
+  value: string;
+  change?: string;
+  trend?: "up" | "down" | "neutral";
+  note?: string;
+};
+
 export type AlertItem = {
   id: string;
   title: string;

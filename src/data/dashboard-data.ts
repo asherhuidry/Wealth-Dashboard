@@ -1,4 +1,4 @@
-import type { ExecutiveMetrics, AlertItem, ActionItem, GoalItem } from "@/types/finance";
+import type { ExecutiveMetrics, MetricItem, AlertItem, ActionItem, GoalItem } from "@/types/finance";
 
 export const executiveMetrics: ExecutiveMetrics = {
   totalNetWorth: 2487365,
@@ -10,6 +10,49 @@ export const executiveMetrics: ExecutiveMetrics = {
   monthlyBudgetTarget: 4500,
   monthlyActualSpend: 4380,
 };
+
+export const primaryMetrics: MetricItem[] = [
+  {
+    id: "net-worth",
+    title: "Net Worth",
+    value: "$2,487,365",
+    change: "+$14,200",
+    trend: "up",
+    note: "vs. last month",
+  },
+  {
+    id: "assets",
+    title: "Total Assets",
+    value: "$3,145,890",
+    change: "+$18,400",
+    trend: "up",
+    note: "vs. last month",
+  },
+  {
+    id: "liabilities",
+    title: "Liabilities",
+    value: "$658,525",
+    change: "−$1,200",
+    trend: "down",
+    note: "decreasing",
+  },
+  {
+    id: "cashflow",
+    title: "Cash Flow",
+    value: "$18,420",
+    change: "+$820",
+    trend: "up",
+    note: "monthly net",
+  },
+  {
+    id: "investable",
+    title: "Investable",
+    value: "$61,250",
+    change: "+$3,100",
+    trend: "up",
+    note: "available capital",
+  },
+];
 
 export const topAlerts: AlertItem[] = [
   {
