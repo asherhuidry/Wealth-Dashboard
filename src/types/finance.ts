@@ -5,6 +5,8 @@ export type ExecutiveMetrics = {
   monthlyCashFlow: number;
   investableCapital: number;
   totalDebt: number;
+  /** Monthly principal + interest payment across all debt obligations */
+  monthlyDebtPayment: number;
   monthlyBudgetTarget: number;
   monthlyActualSpend: number;
 };
