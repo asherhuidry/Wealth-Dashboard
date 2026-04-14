@@ -3,6 +3,15 @@
 :root {
   --background: #070b15;
   --foreground: #f4f7ff;
+  --surface-1: rgba(10, 16, 30, 0.78);
+  --surface-2: rgba(13, 21, 39, 0.92);
+  --surface-3: rgba(255, 255, 255, 0.045);
+  --border-soft: rgba(255, 255, 255, 0.075);
+  --border-strong: rgba(255, 255, 255, 0.12);
+  --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.28);
+  --shadow-strong: 0 28px 80px rgba(0, 0, 0, 0.42);
+  --glow-teal: rgba(45, 212, 191, 0.12);
+  --glow-indigo: rgba(99, 102, 241, 0.1);
 }
 
 @theme inline {
@@ -25,6 +34,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow: hidden;
+  background-image:
+    radial-gradient(circle at 8% -10%, rgba(45, 212, 191, 0.14), transparent 32%),
+    radial-gradient(circle at 88% 12%, rgba(99, 102, 241, 0.12), transparent 28%),
+    radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.035), transparent 42%),
+    linear-gradient(180deg, #070b15 0%, #080d18 52%, #09111d 100%);
+}
+
+a,
+button,
+input,
+textarea,
+select {
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Premium scrollbar */
@@ -34,16 +56,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.14);
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.24);
 }
 
 /* Focus ring */
@@ -57,5 +79,20 @@ body {
 ::selection {
   background: rgba(94, 234, 212, 0.22);
   color: #f4f7ff;
+}
+
+/* Shared premium surfaces */
+.wealth-surface {
+  background: var(--surface-1);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  backdrop-filter: blur(18px);
+}
+
+.wealth-surface-strong {
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-strong);
+  backdrop-filter: blur(22px);
 }
 

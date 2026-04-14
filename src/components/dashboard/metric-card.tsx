@@ -17,27 +17,27 @@ type MetricCardProps = {
 // ─── Accent maps ──────────────────────────────────────────────────────────────
 
 const gradientMap: Record<Accent, string> = {
-  neutral: "from-white/[0.08] to-transparent",
-  teal:    "from-teal-300/[0.14] to-transparent",
-  amber:   "from-amber-300/[0.14] to-transparent",
-  rose:    "from-rose-300/[0.14] to-transparent",
-  indigo:  "from-indigo-300/[0.14] to-transparent",
+  neutral: "from-white/[0.06] to-transparent",
+  teal: "from-teal-300/[0.12] to-transparent",
+  amber: "from-amber-300/[0.12] to-transparent",
+  rose: "from-rose-300/[0.12] to-transparent",
+  indigo: "from-indigo-300/[0.1] to-transparent",
 };
 
 const borderMap: Record<Accent, string> = {
-  neutral: "border-white/[0.08]",
-  teal:    "border-teal-400/[0.18]",
-  amber:   "border-amber-400/[0.15]",
-  rose:    "border-rose-400/[0.15]",
-  indigo:  "border-indigo-400/[0.15]",
+  neutral: "border-white/[0.07]",
+  teal: "border-teal-400/[0.14]",
+  amber: "border-amber-400/[0.14]",
+  rose: "border-rose-400/[0.14]",
+  indigo: "border-indigo-400/[0.12]",
 };
 
 const bgMap: Record<Accent, string> = {
-  neutral: "bg-[#101828]/90",
-  teal:    "bg-[#091c1e]/90",
-  amber:   "bg-[#1a1407]/90",
-  rose:    "bg-[#1c0b12]/90",
-  indigo:  "bg-[#0d0f24]/90",
+  neutral: "bg-[#0d1527]/78",
+  teal: "bg-[#0d1527]/80",
+  amber: "bg-[#101626]/80",
+  rose: "bg-[#111422]/80",
+  indigo: "bg-[#0d1527]/80",
 };
 
 // ─── Component ────────────────────────────────────────────────────────────────
@@ -59,29 +59,27 @@ export default function MetricCard({
   if (featured) {
     return (
       <article
-        className={`relative overflow-hidden rounded-3xl border ${border} ${bg} p-6 text-white shadow-[0_24px_56px_rgba(0,0,0,0.45),inset_0_1px_0_rgba(255,255,255,0.06)]`}
+        className={`relative overflow-hidden rounded-[28px] border ${border} ${bg} p-6 text-white shadow-[0_28px_64px_rgba(0,0,0,0.42),inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-xl`}
       >
-        {/* Stronger top gradient for featured */}
         <div className={`pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b ${gradient}`} />
-        {/* Subtle radial bloom */}
-        <div className="pointer-events-none absolute -left-8 -top-8 h-40 w-40 rounded-full bg-teal-400/[0.07] blur-3xl" />
+        <div className="pointer-events-none absolute -left-8 -top-8 h-40 w-40 rounded-full bg-teal-400/[0.06] blur-3xl" />
 
-        <div className="relative flex min-h-[200px] flex-col justify-between gap-4">
+        <div className="relative flex min-h-[188px] flex-col justify-between gap-5">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/40">
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/34">
               {title}
             </p>
             {subtitle ? (
-              <p className="mt-1.5 text-[13px] font-medium text-white/60">{subtitle}</p>
+              <p className="mt-2 text-[13px] font-medium text-white/58">{subtitle}</p>
             ) : null}
           </div>
 
           <div>
-            <p className="text-4xl font-bold tracking-tight sm:text-[2.75rem]">{value}</p>
+            <p className="text-[2.7rem] font-bold tracking-[-0.04em] sm:text-[3rem]">{value}</p>
 
             {delta ? (
               <p
-                className={`mt-2 flex items-center gap-1 text-sm font-semibold ${
+                className={`mt-3 flex items-center gap-1 text-[12px] font-semibold ${
                   deltaPositive ? "text-teal-400" : "text-rose-400"
                 }`}
               >
@@ -91,7 +89,7 @@ export default function MetricCard({
             ) : null}
 
             {context ? (
-              <p className="mt-2 text-[11px] text-white/35">{context}</p>
+              <p className="mt-2 text-[11px] text-white/36">{context}</p>
             ) : null}
           </div>
         </div>
@@ -101,26 +99,26 @@ export default function MetricCard({
 
   return (
     <article
-      className={`relative overflow-hidden rounded-3xl border ${border} ${bg} p-5 text-white shadow-[0_16px_40px_rgba(0,0,0,0.35),inset_0_1px_0_rgba(255,255,255,0.04)]`}
+      className={`relative overflow-hidden rounded-[26px] border ${border} ${bg} p-5 text-white shadow-[0_18px_42px_rgba(0,0,0,0.32),inset_0_1px_0_rgba(255,255,255,0.04)] backdrop-blur-xl`}
     >
       <div className={`pointer-events-none absolute inset-x-0 top-0 h-20 bg-gradient-to-b ${gradient}`} />
 
-      <div className="relative flex min-h-[140px] flex-col justify-between gap-4">
+      <div className="relative flex min-h-[132px] flex-col justify-between gap-4">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/40">
+          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-white/34">
             {title}
           </p>
           {subtitle ? (
-            <p className="mt-1.5 text-[13px] font-medium text-white/58">{subtitle}</p>
+            <p className="mt-1.5 text-[12px] font-medium text-white/56">{subtitle}</p>
           ) : null}
         </div>
 
         <div>
-          <p className="text-2xl font-semibold tracking-tight">{value}</p>
+          <p className="text-[1.75rem] font-semibold tracking-[-0.03em]">{value}</p>
 
           {delta ? (
             <p
-              className={`mt-1 text-[11px] font-semibold ${
+              className={`mt-1.5 text-[11px] font-semibold ${
                 deltaPositive ? "text-teal-400" : "text-rose-400"
               }`}
             >
@@ -130,7 +128,7 @@ export default function MetricCard({
           ) : null}
 
           {context ? (
-            <p className="mt-1.5 text-[11px] text-white/38">{context}</p>
+            <p className="mt-1.5 text-[11px] text-white/34">{context}</p>
           ) : null}
         </div>
       </div>

@@ -151,36 +151,38 @@ const systemItems: NavItem[] = [
 
 function SidebarContent() {
   return (
-    <div className="flex h-full flex-col overflow-hidden">
-      {/* Brand */}
-      <div className="flex h-14 flex-shrink-0 items-center gap-3 border-b border-white/[0.06] px-4">
-        <div className="flex h-7 w-7 items-center justify-center rounded-xl bg-gradient-to-br from-teal-400 to-cyan-500 text-[11px] font-bold leading-none text-slate-950">
+    <div className="flex h-full flex-col overflow-hidden bg-[#09111d]/72 backdrop-blur-xl">
+      <div className="flex h-20 flex-shrink-0 items-center gap-3 border-b border-white/[0.06] px-5">
+        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-teal-400 to-cyan-500 text-[12px] font-bold leading-none text-slate-950 shadow-[0_10px_25px_rgba(45,212,191,0.18)]">
           W
         </div>
-        <span className="text-[13px] font-semibold tracking-wide text-white/90">WealthOS</span>
+        <div>
+          <span className="block text-[13px] font-semibold tracking-wide text-white/92">WealthOS</span>
+          <span className="block text-[10px] uppercase tracking-[0.16em] text-white/30">Personal Wealth OS</span>
+        </div>
       </div>
 
-      {/* Nav groups */}
-      <nav className="flex-1 overflow-y-auto px-2.5 py-4">
+      <nav className="flex-1 overflow-y-auto px-3 py-5">
         {navGroups.map((group) => (
-          <div key={group.label} className="mb-5">
-            <p className="mb-1.5 px-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-white/28">
+          <div key={group.label} className="mb-6">
+            <p className="mb-2 px-2.5 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/24">
               {group.label}
             </p>
-            <ul className="space-y-px">
+            <ul className="space-y-1">
               {group.items.map((item) => (
                 <li key={item.id}>
                   <a
                     href="#"
                     onClick={(e) => e.preventDefault()}
                     aria-current={item.active ? "page" : undefined}
-                    className={`flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[13px] font-medium transition-colors ${
+                    className={`group relative flex items-center gap-3 rounded-2xl px-3 py-2.5 text-[13px] font-medium transition-all ${
                       item.active
-                        ? "bg-teal-400/[0.13] text-teal-300"
-                        : "text-white/45 hover:bg-white/[0.05] hover:text-white/75"
+                        ? "bg-teal-400/[0.1] text-white"
+                        : "text-white/44 hover:bg-white/[0.045] hover:text-white/76"
                     }`}
                   >
-                    <span className={item.active ? "text-teal-400" : "text-white/35"}>
+                    {item.active ? <span className="absolute left-0 top-1/2 h-5 w-[2px] -translate-y-1/2 rounded-full bg-teal-300" /> : null}
+                    <span className={item.active ? "text-teal-300" : "text-white/30 group-hover:text-white/58"}>
                       {item.icon}
                     </span>
                     {item.label}
@@ -192,15 +194,19 @@ function SidebarContent() {
         ))}
       </nav>
 
-      {/* System */}
-      <div className="flex-shrink-0 border-t border-white/[0.06] px-2.5 py-3">
+      <div className="flex-shrink-0 border-t border-white/[0.06] px-3 py-4">
+        <div className="mb-3 rounded-2xl border border-white/[0.06] bg-white/[0.03] p-3">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/28">Session</p>
+          <p className="mt-1 text-[12px] font-medium text-white/78">Family Office View</p>
+          <p className="mt-0.5 text-[11px] text-white/38">Last sync completed successfully</p>
+        </div>
         <ul className="space-y-px">
           {systemItems.map((item) => (
             <li key={item.id}>
               <a
                 href="#"
                 onClick={(e) => e.preventDefault()}
-                className="flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[13px] font-medium text-white/35 transition-colors hover:bg-white/[0.05] hover:text-white/65"
+                className="flex items-center gap-3 rounded-2xl px-3 py-2.5 text-[13px] font-medium text-white/38 transition-colors hover:bg-white/[0.045] hover:text-white/75"
               >
                 <span className="text-white/30">{item.icon}</span>
                 {item.label}
@@ -234,7 +240,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       {/* Desktop: fixed sidebar */}
       <aside
         aria-label="Main navigation"
-        className="fixed inset-y-0 left-0 z-30 hidden w-[220px] flex-col border-r border-white/[0.06] bg-[#070b15] lg:flex"
+        className="fixed inset-y-0 left-0 z-30 hidden w-[244px] flex-col border-r border-white/[0.06] bg-[#070c18]/92 lg:flex"
       >
         <SidebarContent />
       </aside>
@@ -250,7 +256,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
           />
           <aside
             aria-label="Main navigation"
-            className="absolute inset-y-0 left-0 w-[220px] border-r border-white/[0.06] bg-[#070b15]"
+            className="absolute inset-y-0 left-0 w-[244px] border-r border-white/[0.06] bg-[#070c18]/96"
           >
             <SidebarContent />
           </aside>

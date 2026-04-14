@@ -25,29 +25,34 @@ const fmt = new Intl.NumberFormat("en-US", {
 export default function ExecutiveDashboard() {
   const [metrics, setMetrics] = useState<ExecutiveMetrics>(executiveMetrics);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const liabilitiesRatio = Math.round((metrics.totalLiabilities / metrics.totalAssets) * 100);
+  const investableCoverage = Math.round((metrics.investableCapital / metrics.monthlyCashFlow) * 10) / 10;
 
   return (
     <div className="px-4 py-8 sm:px-6 xl:px-10">
-      <div className="mx-auto max-w-[1400px] space-y-8">
+      <div className="mx-auto max-w-[1440px] space-y-8">
 
-        {/* ── Page header ─────────────────────────────────────────────── */}
-        <header className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/35">
+        <header className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
+          <div className="min-w-0">
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/28">
               Executive Dashboard
             </p>
-            <h1 className="mt-1.5 text-2xl font-semibold tracking-tight sm:text-[1.75rem]">
+            <h1 className="mt-2 text-[2rem] font-semibold tracking-[-0.04em] text-white sm:text-[2.2rem]">
               Portfolio Command Center
             </h1>
-            <p className="mt-1.5 text-[13px] text-white/45">
-              Wealth snapshot · April 14, 2026
+            <p className="mt-2 max-w-2xl text-[13px] text-white/44">
+              Calm, high-signal view of balance sheet strength, cash deployment room, and the decisions that matter now.
             </p>
+            <div className="mt-4 flex flex-wrap items-center gap-2.5">
+              <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-[11px] text-white/46">Updated April 14, 2026</span>
+              <span className="rounded-full border border-teal-400/[0.16] bg-teal-400/[0.06] px-3 py-1.5 text-[11px] text-teal-300">Synced 2 minutes ago</span>
+            </div>
           </div>
 
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="flex h-9 items-center gap-2 rounded-xl border border-white/[0.12] bg-white/[0.06] px-4 text-[13px] font-medium text-white/75 transition hover:bg-white/[0.10] hover:text-white"
+            className="flex h-10 items-center gap-2 rounded-2xl border border-white/[0.1] bg-white/[0.04] px-4 text-[13px] font-medium text-white/78 transition hover:bg-white/[0.09] hover:text-white"
           >
             <svg
               viewBox="0 0 16 16"
@@ -62,12 +67,9 @@ export default function ExecutiveDashboard() {
           </button>
         </header>
 
-        {/* ── Executive band: 5 KPI cards ─────────────────────────────── */}
         <section aria-label="Key metrics">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-[2fr_1fr_1fr_1fr_1fr]">
-
-            {/* Net Worth — featured hero card */}
-            <div className="sm:col-span-2 xl:col-span-1">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-6 xl:grid-cols-12">
+            <div className="md:col-span-6 xl:col-span-4">
               <MetricCard
                 title="Total Net Worth"
                 value={fmt.format(metrics.totalNetWorth)}
@@ -80,38 +82,50 @@ export default function ExecutiveDashboard() {
               />
             </div>
 
-            <MetricCard
-              title="Total Assets"
-              value={fmt.format(metrics.totalAssets)}
-              subtitle="All accounts"
-              context="Liquid + long-term holdings"
-              accent="indigo"
-            />
-            <MetricCard
-              title="Total Liabilities"
-              value={fmt.format(metrics.totalLiabilities)}
-              subtitle="Outstanding obligations"
-              context="Loans, cards, revolving debt"
-              accent="rose"
-            />
-            <MetricCard
-              title="Monthly Cash Flow"
-              value={fmt.format(metrics.monthlyCashFlow)}
-              subtitle="Net income"
-              context="After all monthly outflows"
-              accent="teal"
-            />
-            <MetricCard
-              title="Investable Capital"
-              value={fmt.format(metrics.investableCapital)}
-              subtitle="Ready for deployment"
-              context="Unallocated this month"
-              accent="amber"
-            />
+            <div className="md:col-span-3 xl:col-span-2">
+              <MetricCard
+                title="Total Assets"
+                value={fmt.format(metrics.totalAssets)}
+                subtitle="All accounts"
+                delta="Core position strong"
+                context="Liquid + long-term holdings"
+                accent="indigo"
+              />
+            </div>
+            <div className="md:col-span-3 xl:col-span-2">
+              <MetricCard
+                title="Total Liabilities"
+                value={fmt.format(metrics.totalLiabilities)}
+                subtitle="Outstanding obligations"
+                delta={`${liabilitiesRatio}% of assets`}
+                deltaPositive={false}
+                context="Loans, cards, revolving debt"
+                accent="rose"
+              />
+            </div>
+            <div className="md:col-span-3 xl:col-span-2">
+              <MetricCard
+                title="Monthly Cash Flow"
+                value={fmt.format(metrics.monthlyCashFlow)}
+                subtitle="Net income"
+                delta="Positive operating month"
+                context="After all monthly outflows"
+                accent="neutral"
+              />
+            </div>
+            <div className="md:col-span-3 xl:col-span-2">
+              <MetricCard
+                title="Investable Capital"
+                value={fmt.format(metrics.investableCapital)}
+                subtitle="Ready for deployment"
+                delta={`${investableCoverage} months of cash flow`}
+                context="Unallocated this month"
+                accent="neutral"
+              />
+            </div>
           </div>
         </section>
 
-        {/* ── Decision widgets ─────────────────────────────────────────── */}
         <section aria-label="Decision widgets">
           <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
             <DebtWidget
@@ -127,7 +141,6 @@ export default function ExecutiveDashboard() {
           </div>
         </section>
 
-        {/* ── Intelligence layer ───────────────────────────────────────── */}
         <section
           aria-label="Intelligence layer"
           className="grid grid-cols-1 gap-4 xl:grid-cols-2"

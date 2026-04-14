@@ -81,38 +81,36 @@ export default function QuickUpdateDrawer({ isOpen, metrics, onClose, onApply }:
 
   return (
     <div className="fixed inset-0 z-50 flex items-stretch justify-end">
-      {/* Backdrop */}
       <button
         type="button"
         aria-label="Close Quick Update"
         onClick={onClose}
-        className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"
+        className="absolute inset-0 bg-black/68 backdrop-blur-[3px]"
       />
 
-      {/* Drawer panel */}
       <aside
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label="Quick Update"
         tabIndex={-1}
-        className="relative z-10 flex h-full w-full max-w-[420px] flex-col overflow-hidden border-l border-white/[0.07] bg-[#070c18] outline-none shadow-[-48px_0_80px_rgba(0,0,0,0.55)]"
+        className="relative z-10 flex h-full w-full max-w-[456px] flex-col overflow-hidden border-l border-white/[0.07] bg-[#0a1220]/96 outline-none shadow-[-56px_0_100px_rgba(0,0,0,0.58)] backdrop-blur-xl"
       >
-        {/* Header */}
         <div className="flex flex-shrink-0 items-start justify-between gap-4 border-b border-white/[0.07] px-6 py-5">
           <div>
-            <h2 className="text-[18px] font-semibold tracking-tight text-white">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/30">Quick Update</p>
+            <h2 className="mt-1 text-[20px] font-semibold tracking-tight text-white">
               Quick Update
             </h2>
-            <p className="mt-0.5 text-xs text-white/45">
-              Local state only — no data is saved or sent.
+            <p className="mt-1 text-xs text-white/44">
+              Manual monthly refresh for local dashboard state only.
             </p>
           </div>
           <button
             type="button"
             onClick={onClose}
             aria-label="Close"
-            className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg text-white/40 transition hover:bg-white/[0.07] hover:text-white"
+            className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-xl border border-white/[0.07] bg-white/[0.03] text-white/40 transition hover:bg-white/[0.07] hover:text-white"
           >
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" className="h-4 w-4">
               <path d="M3 3l10 10M13 3L3 13" strokeLinecap="round" />
@@ -120,8 +118,7 @@ export default function QuickUpdateDrawer({ isOpen, metrics, onClose, onApply }:
           </button>
         </div>
 
-        {/* Derived Net Worth preview */}
-        <div className="flex-shrink-0 border-b border-white/[0.07] bg-teal-400/[0.04] px-6 py-4">
+        <div className="flex-shrink-0 border-b border-white/[0.07] bg-gradient-to-r from-teal-400/[0.08] via-transparent to-transparent px-6 py-4">
           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-white/40">
             Derived Net Worth
           </p>
@@ -133,7 +130,6 @@ export default function QuickUpdateDrawer({ isOpen, metrics, onClose, onApply }:
           </p>
         </div>
 
-        {/* Form body */}
         <form
           id="quick-update-form"
           onSubmit={handleSubmit}
@@ -141,7 +137,7 @@ export default function QuickUpdateDrawer({ isOpen, metrics, onClose, onApply }:
         >
           <div className="space-y-6">
             {Object.entries(fieldGroups).map(([groupName, groupFields]) => (
-              <div key={groupName}>
+              <div key={groupName} className="rounded-2xl border border-white/[0.05] bg-white/[0.02] p-4">
                 <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30">
                   {groupName}
                 </p>
@@ -156,7 +152,7 @@ export default function QuickUpdateDrawer({ isOpen, metrics, onClose, onApply }:
                         step="1"
                         value={draft[field.key]}
                         onChange={(e) => update(field.key, e.target.value)}
-                        className="w-full rounded-xl border border-white/[0.09] bg-white/[0.04] px-3.5 py-2.5 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-teal-400/40 focus:bg-white/[0.07]"
+                        className="w-full rounded-xl border border-white/[0.08] bg-white/[0.04] px-3.5 py-2.5 text-sm text-white outline-none transition placeholder:text-white/20 focus:border-teal-400/40 focus:bg-white/[0.08]"
                       />
                     </label>
                   ))}
@@ -166,7 +162,6 @@ export default function QuickUpdateDrawer({ isOpen, metrics, onClose, onApply }:
           </div>
         </form>
 
-        {/* Footer */}
         <div className="flex flex-shrink-0 items-center justify-between gap-3 border-t border-white/[0.07] px-6 py-4">
           <button
             type="button"

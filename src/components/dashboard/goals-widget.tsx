@@ -10,20 +10,17 @@ export default function GoalsWidget({ goals }: { goals: GoalItem[] }) {
   const displayGoals = goals.slice(0, 3);
 
   return (
-    <article className="relative overflow-hidden rounded-3xl border border-indigo-400/12 bg-[#0b0d1f]/90 p-6 text-white shadow-[0_16px_40px_rgba(0,0,0,0.3)]">
-      {/* Accent gradient */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-indigo-400/[0.09] to-transparent" />
+    <article className="relative overflow-hidden rounded-[28px] border border-white/[0.07] bg-[#0d1527]/80 p-6 text-white shadow-[0_18px_42px_rgba(0,0,0,0.32)] backdrop-blur-xl">
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-indigo-400/[0.08] to-transparent" />
 
       <div className="relative space-y-5">
-        {/* Header */}
         <div>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-white/45">
+          <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-white/30">
             Goals
           </p>
-          <p className="mt-1 text-sm text-white/50">Progress toward top targets</p>
+          <p className="mt-1 text-sm text-white/46">Progress toward top targets</p>
         </div>
 
-        {/* Goal list */}
         <div className="space-y-4">
           {displayGoals.map((goal) => {
             const remaining = Math.max(goal.target - goal.current, 0);
@@ -35,9 +32,9 @@ export default function GoalsWidget({ goals }: { goals: GoalItem[] }) {
                 : "bg-amber-400";
 
             return (
-              <div key={goal.id}>
-                <div className="mb-1.5 flex items-center justify-between gap-2">
-                  <span className="truncate text-[13px] font-medium text-white/80">
+              <div key={goal.id} className="rounded-2xl border border-white/[0.05] bg-white/[0.02] px-4 py-3.5">
+                <div className="mb-2 flex items-center justify-between gap-2">
+                  <span className="truncate text-[13px] font-medium text-white/82">
                     {goal.name}
                   </span>
                   <span
@@ -49,20 +46,18 @@ export default function GoalsWidget({ goals }: { goals: GoalItem[] }) {
                   </span>
                 </div>
 
-                {/* Bar */}
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-white/[0.07]">
+                <div className="h-2 w-full overflow-hidden rounded-full bg-white/[0.06]">
                   <div
                     className={`h-full rounded-full transition-all ${barColor}`}
                     style={{ width: `${Math.min(goal.progress, 100)}%` }}
                   />
                 </div>
 
-                {/* Context */}
-                <div className="mt-1.5 flex items-center justify-between">
-                  <span className="text-[10px] text-white/35">
+                <div className="mt-2 flex items-center justify-between">
+                  <span className="text-[10px] text-white/36">
                     {fmt.format(goal.current)}
                   </span>
-                  <span className="text-[10px] text-white/25">
+                  <span className="text-[10px] text-white/28">
                     {fmt.format(remaining)} to go
                   </span>
                 </div>
