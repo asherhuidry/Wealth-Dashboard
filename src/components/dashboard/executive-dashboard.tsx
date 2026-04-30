@@ -1,164 +1,150 @@
 "use client";
 
-import { useState } from "react";
-import MetricCard from "./metric-card";
-import DebtWidget from "./debt-widget";
-import BudgetWidget from "./budget-widget";
-import GoalsWidget from "./goals-widget";
-import AlertsPanel from "./alerts-panel";
-import ActionsPanel from "./actions-panel";
-import QuickUpdateDrawer from "./quick-update-drawer";
-import {
-  executiveMetrics,
-  goalItems,
-  nextActions,
-  topAlerts,
-} from "@/data/dashboard-data";
-import type { ExecutiveMetrics } from "@/types/finance";
+import { useMemo, useState, type ReactNode } from "react";
 
-const fmt = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0,
-});
+type Country = {
+  id: string;
+  name: string;
+  treasury: number;
+  gdp: number;
+  military: number;
+  resources: number;
+  stability: number;
+};
+
+const countries: Country[] = [
+  { id: "auroria", name: "Auroria", treasury: 380, gdp: 720, military: 52, resources: 63, stability: 70 },
+  { id: "varkesh", name: "Varkesh", treasury: 310, gdp: 660, military: 64, resources: 54, stability: 58 },
+  { id: "thalmer", name: "Thalmer Union", treasury: 420, gdp: 810, military: 49, resources: 69, stability: 76 },
+];
 
 export default function ExecutiveDashboard() {
-  const [metrics, setMetrics] = useState<ExecutiveMetrics>(executiveMetrics);
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const liabilitiesRatio = Math.round((metrics.totalLiabilities / metrics.totalAssets) * 100);
-  const investableCoverage = Math.round((metrics.investableCapital / metrics.monthlyCashFlow) * 10) / 10;
+  const [selectedId, setSelectedId] = useState(countries[0].id);
+  const [alliances, setAlliances] = useState<string[]>([]);
+  const [warTarget, setWarTarget] = useState<string | null>(null);
+  const [tradeTarget, setTradeTarget] = useState<string | null>(null);
+  const [turn, setTurn] = useState(1);
+
+  const player = useMemo(() => countries.find((c) => c.id === selectedId) ?? countries[0], [selectedId]);
+  const rivals = countries.filter((c) => c.id !== player.id);
+
+  const utility = Math.round(player.gdp * 0.45 + player.stability * 3 + player.resources * 2 - player.military * 1.4);
+  const deterrence = Math.round((player.military * 1.6 + alliances.length * 10) / 2);
 
   return (
-    <div className="px-4 py-8 sm:px-6 xl:px-10">
-      <div className="mx-auto max-w-[1440px] space-y-8">
-
-        <header className="flex flex-col gap-5 xl:flex-row xl:items-end xl:justify-between">
-          <div className="min-w-0">
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/28">
-              Executive Dashboard
-            </p>
-            <h1 className="mt-2 text-[2rem] font-semibold tracking-[-0.04em] text-white sm:text-[2.2rem]">
-              Portfolio Command Center
-            </h1>
-            <p className="mt-2 max-w-2xl text-[13px] text-white/44">
-              Calm, high-signal view of balance sheet strength, cash deployment room, and the decisions that matter now.
-            </p>
-            <div className="mt-4 flex flex-wrap items-center gap-2.5">
-              <span className="rounded-full border border-white/[0.07] bg-white/[0.03] px-3 py-1.5 text-[11px] text-white/46">Updated April 14, 2026</span>
-              <span className="rounded-full border border-teal-400/[0.16] bg-teal-400/[0.06] px-3 py-1.5 text-[11px] text-teal-300">Synced 2 minutes ago</span>
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={() => setDrawerOpen(true)}
-            className="flex h-10 items-center gap-2 rounded-2xl border border-white/[0.1] bg-white/[0.04] px-4 text-[13px] font-medium text-white/78 transition hover:bg-white/[0.09] hover:text-white"
-          >
-            <svg
-              viewBox="0 0 16 16"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.75"
-              className="h-3.5 w-3.5"
-            >
-              <path d="M8 2v12M2 8h12" strokeLinecap="round" />
-            </svg>
-            Quick Update
-          </button>
+    <div className="px-4 py-8 sm:px-6 xl:px-10 text-white">
+      <div className="mx-auto max-w-[1200px] space-y-6">
+        <header className="space-y-2">
+          <p className="text-xs uppercase tracking-[0.2em] text-white/40">Grand Strategy Simulation</p>
+          <h1 className="text-3xl font-semibold tracking-tight">Command a Nation</h1>
+          <p className="text-sm text-white/60">Choose a country and balance game theory tradeoffs across economics, military expansion, resources, alliances, and war.</p>
         </header>
 
-        <section aria-label="Key metrics">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-6 xl:grid-cols-12">
-            <div className="md:col-span-6 xl:col-span-4">
-              <MetricCard
-                title="Total Net Worth"
-                value={fmt.format(metrics.totalNetWorth)}
-                subtitle="Household wealth position"
-                delta="+$147k this quarter"
-                deltaPositive
-                context="Assets minus total liabilities"
-                accent="teal"
-                featured
-              />
-            </div>
-
-            <div className="md:col-span-3 xl:col-span-2">
-              <MetricCard
-                title="Total Assets"
-                value={fmt.format(metrics.totalAssets)}
-                subtitle="All accounts"
-                delta="Core position strong"
-                context="Liquid + long-term holdings"
-                accent="indigo"
-              />
-            </div>
-            <div className="md:col-span-3 xl:col-span-2">
-              <MetricCard
-                title="Total Liabilities"
-                value={fmt.format(metrics.totalLiabilities)}
-                subtitle="Outstanding obligations"
-                delta={`${liabilitiesRatio}% of assets`}
-                deltaPositive={false}
-                context="Loans, cards, revolving debt"
-                accent="rose"
-              />
-            </div>
-            <div className="md:col-span-3 xl:col-span-2">
-              <MetricCard
-                title="Monthly Cash Flow"
-                value={fmt.format(metrics.monthlyCashFlow)}
-                subtitle="Net income"
-                delta="Positive operating month"
-                context="After all monthly outflows"
-                accent="neutral"
-              />
-            </div>
-            <div className="md:col-span-3 xl:col-span-2">
-              <MetricCard
-                title="Investable Capital"
-                value={fmt.format(metrics.investableCapital)}
-                subtitle="Ready for deployment"
-                delta={`${investableCoverage} months of cash flow`}
-                context="Unallocated this month"
-                accent="neutral"
-              />
-            </div>
-          </div>
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <label className="text-xs uppercase text-white/50">Country</label>
+          <select
+            value={selectedId}
+            onChange={(e) => {
+              setSelectedId(e.target.value);
+              setAlliances([]);
+              setWarTarget(null);
+              setTradeTarget(null);
+              setTurn(1);
+            }}
+            className="mt-2 w-full rounded-xl border border-white/15 bg-black/30 px-3 py-2 text-sm"
+          >
+            {countries.map((country) => (
+              <option key={country.id} value={country.id}>
+                {country.name}
+              </option>
+            ))}
+          </select>
         </section>
 
-        <section aria-label="Decision widgets">
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            <DebtWidget
-              totalDebt={metrics.totalDebt}
-              monthlyDebtPayment={metrics.monthlyDebtPayment}
-              totalAssets={metrics.totalAssets}
-            />
-            <BudgetWidget
-              monthlyActualSpend={metrics.monthlyActualSpend}
-              monthlyBudgetTarget={metrics.monthlyBudgetTarget}
-            />
-            <GoalsWidget goals={goalItems} />
-          </div>
+        <section className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-4">
+          <Stat title="Treasury" value={`$${player.treasury}B`} subtitle="Fiscal room" />
+          <Stat title="GDP" value={`$${player.gdp}B`} subtitle="Economic output" />
+          <Stat title="Military" value={`${player.military}/100`} subtitle="Readiness index" />
+          <Stat title="Resources" value={`${player.resources}/100`} subtitle="Energy + food + minerals" />
         </section>
 
-        <section
-          aria-label="Intelligence layer"
-          className="grid grid-cols-1 gap-4 xl:grid-cols-2"
-        >
-          <AlertsPanel alerts={topAlerts} />
-          <ActionsPanel actions={nextActions} />
+        <section className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          <Card title="Diplomacy">
+            {rivals.map((rival) => {
+              const inAlliance = alliances.includes(rival.id);
+              return (
+                <button
+                  key={rival.id}
+                  onClick={() =>
+                    setAlliances((prev) =>
+                      inAlliance ? prev.filter((id) => id !== rival.id) : [...prev, rival.id]
+                    )
+                  }
+                  className={`mb-2 w-full rounded-xl border px-3 py-2 text-left text-sm ${inAlliance ? "border-teal-300/50 bg-teal-400/15" : "border-white/10 bg-white/5"}`}
+                >
+                  {inAlliance ? "Alliance Active: " : "Offer Alliance: "}
+                  {rival.name}
+                </button>
+              );
+            })}
+          </Card>
+
+          <Card title="Trade">
+            {rivals.map((rival) => (
+              <button
+                key={rival.id}
+                onClick={() => setTradeTarget(rival.id)}
+                className="mb-2 w-full rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-left text-sm"
+              >
+                Sign trade pact with {rival.name}
+              </button>
+            ))}
+            {tradeTarget && <p className="text-xs text-teal-300">Trade pact signed with {countries.find((c) => c.id === tradeTarget)?.name} (+resources, +GDP over time).</p>}
+          </Card>
+
+          <Card title="Military">
+            {rivals.map((rival) => (
+              <button
+                key={rival.id}
+                onClick={() => setWarTarget(rival.id)}
+                className="mb-2 w-full rounded-xl border border-rose-300/25 bg-rose-400/10 px-3 py-2 text-left text-sm"
+              >
+                Declare war on {rival.name}
+              </button>
+            ))}
+            {warTarget && <p className="text-xs text-rose-300">Active conflict: {player.name} vs {countries.find((c) => c.id === warTarget)?.name} (higher risk, potential resource capture).</p>}
+          </Card>
         </section>
 
+        <section className="rounded-2xl border border-white/10 bg-white/5 p-4 text-sm">
+          <h2 className="font-medium">Game Theory Dashboard — Turn {turn}</h2>
+          <ul className="mt-2 space-y-1 text-white/70">
+            <li>Strategic utility: <span className="text-white">{utility}</span> (economy + stability + resources − military cost)</li>
+            <li>Deterrence score: <span className="text-white">{deterrence}</span> (force projection + alliances)</li>
+            <li>Nash pressure: <span className="text-white">{warTarget ? "Escalation" : tradeTarget ? "Cooperative equilibrium" : "Mixed strategy"}</span></li>
+          </ul>
+          <button onClick={() => setTurn((t) => t + 1)} className="mt-3 rounded-xl border border-white/15 bg-white/10 px-3 py-2 text-xs">Advance Turn</button>
+        </section>
       </div>
-
-      {/* ── Quick Update drawer ──────────────────────────────────────── */}
-      <QuickUpdateDrawer
-        key={String(drawerOpen)}
-        isOpen={drawerOpen}
-        metrics={metrics}
-        onClose={() => setDrawerOpen(false)}
-        onApply={setMetrics}
-      />
     </div>
+  );
+}
+
+function Stat({ title, value, subtitle }: { title: string; value: string; subtitle: string }) {
+  return (
+    <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+      <p className="text-xs uppercase text-white/45">{title}</p>
+      <p className="mt-1 text-2xl font-semibold">{value}</p>
+      <p className="mt-1 text-xs text-white/50">{subtitle}</p>
+    </article>
+  );
+}
+
+function Card({ title, children }: { title: string; children: ReactNode }) {
+  return (
+    <article className="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
+      <h3 className="mb-3 text-sm font-medium">{title}</h3>
+      {children}
+    </article>
   );
 }
